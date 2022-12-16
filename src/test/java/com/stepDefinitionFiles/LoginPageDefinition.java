@@ -13,9 +13,7 @@ public class LoginPageDefinition {
 	
 	public WebDriver driver;
 	public LoginPage lp;
-	
-	
-	
+		
 	@Given("User Launch Chrome Browser")
 	public void user_launch_chrome_browser() {
 		WebDriverManager.chromedriver().setup();
@@ -59,11 +57,16 @@ public class LoginPageDefinition {
 		lp.clickLogoutBtn();
 		
 	}
-	
-	
+		
 	@Then("Page Title Should be {string}")
 	public void Page_title_should_be(String title) {
-		
+		if(driver.getPageSource().contains("Your store. Login")) {
+			driver.close();
+			Assert.assertTrue(true);
+		}
+		else {
+			Assert.assertFalse(false);
+		}	
 		
 	}
 
