@@ -1,5 +1,7 @@
 package com.stepDefinitionFiles;
 
+import java.util.concurrent.TimeUnit;
+
 import org.junit.Assert;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -23,17 +25,19 @@ public class LoginPageDefinition {
 	}
 
 	@When("User open URL {string}")
-	public void user_open_url(String url) {
+	public void user_open_url(String url) throws Throwable {
 		driver.get(url);
 		driver.manage().window().maximize();
+		Thread.sleep(10);
 	}
 
 	@When("User enters Email as {string} and password as {string}")
 	public void user_enters_email_as_and_password_as(String username, String password) {
 	    lp.setUserName(username);
+	    driver.manage().timeouts().implicitlyWait(10,TimeUnit.SECONDS);
 	    lp.setPassword(password);
 	}
-
+	
 	@When("Click on Login")
 	public void click_on_login() {
 	   lp.clickLoginBtn();
@@ -58,9 +62,9 @@ public class LoginPageDefinition {
 		
 	}
 		
-	@Then("Page Title Should be {string}")
-	public void Page_title_should_be(String title) {
-		if(driver.getPageSource().contains("Your store. Login")) {
+	@Then("Page URL should contains {string}")
+	public void Page_URL_should_contains(String PageTitle) {
+		if(driver.getCurrentUrl().contains(PageTitle)) {
 			driver.close();
 			Assert.assertTrue(true);
 		}
